@@ -32,19 +32,40 @@ const Index = () => {
     }
   ];
 
-  const salesFunnel = [
-    { stage: 'Новая сделка', amount: 2000000, percentage: 6.6 },
-    { stage: 'ЛПР', amount: 123333, percentage: 0.4 },
-    { stage: 'Отправлено КП', amount: 0, percentage: 0 },
-    { stage: 'Согласовано КП', amount: 1000000, percentage: 3.3 },
-    { stage: 'Договор отправлен', amount: 0, percentage: 0 },
-    { stage: 'Договор подписан', amount: 3333333, percentage: 11 },
-    { stage: 'Счёт выставлен', amount: 3235423, percentage: 10.7 },
-    { stage: 'Товар доставлен', amount: 12332111, percentage: 40.8 },
-    { stage: 'Закрывающие документы', amount: 7843000, percentage: 26 }
+  const businessMetrics = [
+    { stage: 'Новая сделка', amount: 100000, type: 'income', icon: 'TrendingUp' },
+    { stage: 'Поступила предоплата от клиента за заказ', amount: 6000, type: 'income', icon: 'ArrowDownToLine' },
+    { stage: 'ЛПР', amount: 100, type: 'neutral', icon: 'Users' },
+    { stage: 'Отправлено КП', amount: 100, type: 'neutral', icon: 'Send' },
+    { stage: 'Согласовано КП', amount: 10, type: 'neutral', icon: 'FileCheck' },
+    { stage: 'Договор отправлен', amount: 10, type: 'neutral', icon: 'FileText' },
+    { stage: 'Договор подписан', amount: 10, type: 'neutral', icon: 'FilePenLine' },
+    { stage: 'Счёт выставлен', amount: 5, type: 'neutral', icon: 'Receipt' },
+    { stage: 'Поступила предоплата от клиента за заказ', amount: null, type: 'income', icon: 'CircleDollarSign' },
+    { stage: 'Заплатила аванс за материалы и отгрузила их на производство', amount: null, type: 'expense', icon: 'ShoppingCart' },
+    { stage: 'Себестоимость отгруженного товара', amount: null, type: 'expense', icon: 'Package' },
+    { stage: 'Доплатила поставщику за материалы', amount: null, type: 'expense', icon: 'Banknote' },
+    { stage: 'Отгрузила товар клиенту', amount: null, type: 'neutral', icon: 'Truck' },
+    { stage: 'Товар доставлен', amount: null, type: 'neutral', icon: 'PackageCheck' },
+    { stage: 'Получила от клиента постоплата', amount: null, type: 'income', icon: 'Wallet' },
+    { stage: 'Получены закрывающие документы', amount: null, type: 'neutral', icon: 'FileStack' },
+    { stage: 'Оплатила долг по аренде цеха за прошлый месяц', amount: null, type: 'expense', icon: 'Building' },
+    { stage: 'Начислила и оплатила аренду цеха за этот месяц', amount: null, type: 'expense', icon: 'Home' },
+    { stage: 'Начисляла и оплатила себе зарплату за текущий месяц', amount: 0, type: 'expense', icon: 'User' },
+    { stage: 'Перечисляла на счет налогов', amount: null, type: 'expense', icon: 'Receipt' },
+    { stage: 'Перечислила на счет страховых взносов', amount: null, type: 'expense', icon: 'Shield' },
+    { stage: 'Начисляла амортизацию за оборудование', amount: null, type: 'expense', icon: 'Settings' },
+    { stage: 'Оплатила старый кредит (тело + процент)', amount: null, type: 'expense', icon: 'CreditCard' },
+    { stage: 'Чистая прибыль', amount: null, type: 'profit', icon: 'TrendingUp' }
   ];
 
-  const totalPipeline = salesFunnel.reduce((sum, stage) => sum + stage.amount, 0);
+  const totalIncome = businessMetrics
+    .filter(m => m.type === 'income' && m.amount)
+    .reduce((sum, m) => sum + m.amount, 0);
+  
+  const totalExpenses = businessMetrics
+    .filter(m => m.type === 'expense' && m.amount)
+    .reduce((sum, m) => sum + m.amount, 0);
 
   const team = [
     { 
@@ -168,21 +189,35 @@ const Index = () => {
       <section id="funnel" className="py-20 px-6 bg-gradient-to-br from-purple-50 to-orange-50">
         <div className="container mx-auto">
           <div className="text-center mb-16 animate-fade-in">
-            <Badge className="mb-4 bg-purple-100 text-purple-700">Воронка продаж</Badge>
+            <Badge className="mb-4 bg-purple-100 text-purple-700">Финансовая аналитика</Badge>
             <h3 className="font-heading text-4xl font-bold text-purple-900 mb-4">
               Аналитика в реальном времени
             </h3>
             <p className="text-lg text-purple-600 max-w-2xl mx-auto">
-              Прозрачная система отслеживания сделок на каждом этапе
+              Полный цикл операций: от сделки до прибыли
             </p>
           </div>
           
-          <div className="max-w-5xl mx-auto mb-8">
-            <Card className="bg-gradient-to-r from-purple-600 to-orange-500 text-white shadow-2xl">
-              <CardContent className="p-8">
-                <div className="text-center">
-                  <p className="text-sm mb-2 text-purple-100">Общий объём воронки</p>
-                  <p className="text-5xl font-bold">{formatAmount(totalPipeline)}</p>
+          <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto mb-8">
+            <Card className="bg-gradient-to-r from-green-600 to-emerald-500 text-white shadow-2xl">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm mb-1 text-green-100">Доходы</p>
+                    <p className="text-3xl font-bold">{formatAmount(totalIncome)}</p>
+                  </div>
+                  <Icon name="TrendingUp" size={40} className="text-green-200" />
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="bg-gradient-to-r from-red-600 to-rose-500 text-white shadow-2xl">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm mb-1 text-red-100">Расходы</p>
+                    <p className="text-3xl font-bold">{formatAmount(totalExpenses)}</p>
+                  </div>
+                  <Icon name="TrendingDown" size={40} className="text-red-200" />
                 </div>
               </CardContent>
             </Card>
@@ -190,32 +225,49 @@ const Index = () => {
 
           <Card className="max-w-5xl mx-auto shadow-2xl border-purple-200">
             <CardContent className="p-8">
-              <div className="space-y-6">
-                {salesFunnel.map((stage, index) => (
-                  <div 
-                    key={index} 
-                    className="animate-slide-up"
-                    style={{ animationDelay: `${index * 50}ms` }}
-                  >
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium text-purple-900">{stage.stage}</span>
-                      <div className="text-right">
-                        <span className="font-bold text-purple-900">{formatAmount(stage.amount)}</span>
-                        <span className="text-sm text-purple-600 ml-2">({stage.percentage}%)</span>
+              <div className="space-y-4">
+                {businessMetrics.map((metric, index) => {
+                  const bgColor = 
+                    metric.type === 'income' ? 'bg-green-50 border-green-200' :
+                    metric.type === 'expense' ? 'bg-red-50 border-red-200' :
+                    metric.type === 'profit' ? 'bg-purple-50 border-purple-300' :
+                    'bg-gray-50 border-gray-200';
+                  
+                  const iconColor =
+                    metric.type === 'income' ? 'text-green-600' :
+                    metric.type === 'expense' ? 'text-red-600' :
+                    metric.type === 'profit' ? 'text-purple-600' :
+                    'text-gray-600';
+                  
+                  return (
+                    <div 
+                      key={index} 
+                      className={`p-4 rounded-lg border-2 ${bgColor} animate-slide-up transition-all hover:shadow-md`}
+                      style={{ animationDelay: `${index * 30}ms` }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3 flex-1">
+                          <Icon name={metric.icon as any} size={24} className={iconColor} />
+                          <span className="font-medium text-gray-800">{metric.stage}</span>
+                        </div>
+                        <div className="text-right">
+                          {metric.amount !== null ? (
+                            <span className={`font-bold text-lg ${
+                              metric.type === 'income' ? 'text-green-700' :
+                              metric.type === 'expense' ? 'text-red-700' :
+                              metric.type === 'profit' ? 'text-purple-700' :
+                              'text-gray-700'
+                            }`}>
+                              {formatAmount(metric.amount)}
+                            </span>
+                          ) : (
+                            <span className="text-gray-400 text-sm">—</span>
+                          )}
+                        </div>
                       </div>
                     </div>
-                    <div className="h-8 bg-purple-100 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-gradient-to-r from-purple-500 to-orange-500 rounded-full transition-all duration-1000 flex items-center justify-end pr-3"
-                        style={{ width: `${stage.percentage}%` }}
-                      >
-                        {stage.percentage > 5 && (
-                          <span className="text-white text-xs font-medium">{stage.percentage}%</span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </CardContent>
           </Card>
