@@ -2,13 +2,9 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Progress } from '@/components/ui/progress';
 import Icon from '@/components/ui/icon';
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState('overview');
-
   const services = [
     {
       icon: 'Calculator',
@@ -37,22 +33,32 @@ const Index = () => {
   ];
 
   const salesFunnel = [
-    { stage: 'Новая сделка', amount: 2000000, color: 'bg-slate-400' },
-    { stage: 'ЛПР', amount: 123333, color: 'bg-blue-400' },
-    { stage: 'Отправлено КП', amount: 0, color: 'bg-cyan-400' },
-    { stage: 'Согласовано КП', amount: 1000000, color: 'bg-green-400' },
-    { stage: 'Договор отправлен', amount: 0, color: 'bg-lime-400' },
-    { stage: 'Договор подписан', amount: 3333333, color: 'bg-yellow-400' },
-    { stage: 'Счёт выставлен', amount: 3235423, color: 'bg-orange-400' },
-    { stage: 'Товар доставлен', amount: 12332111, color: 'bg-purple-400' },
-    { stage: 'Закрывающие документы', amount: 7843000, color: 'bg-pink-400' }
+    { stage: 'Новая сделка', amount: 2000000, percentage: 6.6 },
+    { stage: 'ЛПР', amount: 123333, percentage: 0.4 },
+    { stage: 'Отправлено КП', amount: 0, percentage: 0 },
+    { stage: 'Согласовано КП', amount: 1000000, percentage: 3.3 },
+    { stage: 'Договор отправлен', amount: 0, percentage: 0 },
+    { stage: 'Договор подписан', amount: 3333333, percentage: 11 },
+    { stage: 'Счёт выставлен', amount: 3235423, percentage: 10.7 },
+    { stage: 'Товар доставлен', amount: 12332111, percentage: 40.8 },
+    { stage: 'Закрывающие документы', amount: 7843000, percentage: 26 }
   ];
 
-  const maxAmount = Math.max(...salesFunnel.map(s => s.amount));
+  const totalPipeline = salesFunnel.reduce((sum, stage) => sum + stage.amount, 0);
 
   const team = [
-    { name: 'Алена Цветова', role: 'Управляющий партнёр', expertise: 'Стратегия и развитие' },
-    { name: 'Ведущий специалист', role: 'Главный эксперт', expertise: 'Операционное управление' }
+    { 
+      name: 'Алена Цветова', 
+      role: 'Управляющий партнёр', 
+      expertise: 'Стратегическое развитие бизнеса',
+      icon: 'Crown'
+    },
+    { 
+      name: 'Ведущий специалист', 
+      role: 'Главный эксперт', 
+      expertise: 'Операционное управление',
+      icon: 'Award'
+    }
   ];
 
   const formatAmount = (amount: number) => {
@@ -65,11 +71,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-orange-50">
-      <nav className="sticky top-0 z-50 backdrop-blur-lg bg-white/80 border-b border-purple-100">
+      <nav className="sticky top-0 z-50 backdrop-blur-lg bg-white/90 border-b border-purple-100 shadow-sm">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 animate-fade-in">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-orange-500 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
                 <Icon name="Sparkles" className="text-white" size={24} />
               </div>
               <div>
@@ -83,9 +89,9 @@ const Index = () => {
               <a href="#team" className="text-sm font-medium text-purple-800 hover:text-orange-500 transition-colors">Команда</a>
               <a href="#knowledge" className="text-sm font-medium text-purple-800 hover:text-orange-500 transition-colors">База знаний</a>
             </div>
-            <Button className="bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600">
+            <Button className="bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600 shadow-lg">
               <Icon name="MessageCircle" className="mr-2" size={16} />
-              Связаться через бот
+              Связаться
             </Button>
           </div>
         </div>
@@ -106,7 +112,7 @@ const Index = () => {
                 Работаем на базе собственной системы знаний и автоматизированных процессов.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600 text-lg">
+                <Button size="lg" className="bg-gradient-to-r from-purple-600 to-orange-500 hover:from-purple-700 hover:to-orange-600 text-lg shadow-lg">
                   <Icon name="Bot" className="mr-2" size={20} />
                   Начать работу через бот
                 </Button>
@@ -119,7 +125,7 @@ const Index = () => {
             <div className="relative animate-scale-in">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-orange-400 rounded-3xl blur-2xl opacity-20"></div>
               <img 
-                src="https://cdn.poehali.dev/projects/050ac2ee-43c1-420e-b33a-c7ab151da85e/files/839ba948-742d-4376-a6d8-92dc7a2b5b60.jpg" 
+                src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop" 
                 alt="Профессиональное бизнес-пространство"
                 className="relative rounded-3xl shadow-2xl w-full h-[500px] object-cover"
               />
@@ -170,6 +176,18 @@ const Index = () => {
               Прозрачная система отслеживания сделок на каждом этапе
             </p>
           </div>
+          
+          <div className="max-w-5xl mx-auto mb-8">
+            <Card className="bg-gradient-to-r from-purple-600 to-orange-500 text-white shadow-2xl">
+              <CardContent className="p-8">
+                <div className="text-center">
+                  <p className="text-sm mb-2 text-purple-100">Общий объём воронки</p>
+                  <p className="text-5xl font-bold">{formatAmount(totalPipeline)}</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
           <Card className="max-w-5xl mx-auto shadow-2xl border-purple-200">
             <CardContent className="p-8">
               <div className="space-y-6">
@@ -179,37 +197,25 @@ const Index = () => {
                     className="animate-slide-up"
                     style={{ animationDelay: `${index * 50}ms` }}
                   >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-semibold text-purple-900">{stage.stage}</span>
-                      <span className="font-bold text-purple-700">{formatAmount(stage.amount)}</span>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="font-medium text-purple-900">{stage.stage}</span>
+                      <div className="text-right">
+                        <span className="font-bold text-purple-900">{formatAmount(stage.amount)}</span>
+                        <span className="text-sm text-purple-600 ml-2">({stage.percentage}%)</span>
+                      </div>
                     </div>
-                    <div className="relative h-8 bg-purple-100 rounded-lg overflow-hidden">
+                    <div className="h-8 bg-purple-100 rounded-full overflow-hidden">
                       <div 
-                        className={`h-full ${stage.color} flex items-center px-4 text-white font-medium text-sm transition-all duration-1000`}
-                        style={{ width: `${stage.amount > 0 ? (stage.amount / maxAmount) * 100 : 2}%` }}
+                        className="h-full bg-gradient-to-r from-purple-500 to-orange-500 rounded-full transition-all duration-1000 flex items-center justify-end pr-3"
+                        style={{ width: `${stage.percentage}%` }}
                       >
-                        {stage.amount > 0 && (
-                          <span className="drop-shadow-md">
-                            {((stage.amount / maxAmount) * 100).toFixed(1)}%
-                          </span>
+                        {stage.percentage > 5 && (
+                          <span className="text-white text-xs font-medium">{stage.percentage}%</span>
                         )}
                       </div>
                     </div>
                   </div>
                 ))}
-              </div>
-              <div className="mt-8 p-6 bg-gradient-to-r from-purple-100 to-orange-100 rounded-xl">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-purple-600 mb-1">Общая сумма в воронке</p>
-                    <p className="text-3xl font-bold text-purple-900">
-                      {formatAmount(salesFunnel.reduce((sum, s) => sum + s.amount, 0))}
-                    </p>
-                  </div>
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-orange-500 rounded-full flex items-center justify-center">
-                    <Icon name="TrendingUp" className="text-white" size={32} />
-                  </div>
-                </div>
               </div>
             </CardContent>
           </Card>
@@ -219,30 +225,33 @@ const Index = () => {
       <section id="team" className="py-20 px-6 bg-white">
         <div className="container mx-auto">
           <div className="text-center mb-16 animate-fade-in">
-            <Badge className="mb-4 bg-orange-100 text-orange-700">Команда экспертов</Badge>
+            <Badge className="mb-4 bg-orange-100 text-orange-700">Наша команда</Badge>
             <h3 className="font-heading text-4xl font-bold text-purple-900 mb-4">
               Профессионалы своего дела
             </h3>
+            <p className="text-lg text-purple-600 max-w-2xl mx-auto">
+              Опыт и экспертиза для решения самых сложных задач
+            </p>
           </div>
-          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {team.map((member, index) => (
               <Card 
                 key={index} 
-                className="hover:shadow-xl transition-all border-purple-200 animate-scale-in"
-                style={{ animationDelay: `${index * 200}ms` }}
+                className="group hover:shadow-2xl transition-all duration-300 border-purple-200 animate-slide-up"
+                style={{ animationDelay: `${index * 100}ms` }}
               >
                 <CardHeader>
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-orange-500 rounded-full flex items-center justify-center">
-                      <Icon name="User" className="text-white" size={28} />
+                  <div className="flex items-start gap-4">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                      <Icon name={member.icon as any} className="text-white" size={28} />
                     </div>
-                    <div>
-                      <CardTitle className="font-heading text-purple-900">{member.name}</CardTitle>
-                      <Badge className="mt-1 bg-purple-100 text-purple-700">{member.role}</Badge>
+                    <div className="flex-1">
+                      <CardTitle className="font-heading text-purple-900 text-xl">{member.name}</CardTitle>
+                      <Badge className="mt-2 bg-purple-100 text-purple-700">{member.role}</Badge>
                     </div>
                   </div>
-                  <CardDescription className="text-purple-600">
-                    <Icon name="Award" className="inline mr-2" size={16} />
+                  <CardDescription className="text-purple-600 mt-4 flex items-center">
+                    <Icon name="Briefcase" className="inline mr-2" size={16} />
                     {member.expertise}
                   </CardDescription>
                 </CardHeader>
@@ -263,10 +272,10 @@ const Index = () => {
             </h3>
             <p className="text-xl mb-8 text-purple-100 leading-relaxed">
               Все взаимодействие происходит через интеллектуального бота, работающего на основе нашей 
-              базы знаний. Статьи, видео на YouTube и пошаговые инструкции — всё для вашего удобства.
+              базы знаний. Статьи, видео на YouTube и Rutube, пошаговые инструкции — всё для вашего удобства.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-purple-900 hover:bg-purple-50">
+              <Button size="lg" className="bg-white text-purple-900 hover:bg-purple-50 shadow-xl">
                 <Icon name="Bot" className="mr-2" size={20} />
                 Открыть бот
               </Button>
@@ -297,24 +306,23 @@ const Index = () => {
                 <Icon name="Sparkles" className="text-white" size={20} />
               </div>
               <div>
-                <p className="font-heading font-bold text-white">ИП Цветова Алена Сергеевна</p>
-                <p className="text-sm text-purple-400">Многопрофильные решения для бизнеса</p>
+                <p className="font-bold text-white">ИП Цветова Алена Сергеевна</p>
+                <p className="text-xs text-purple-300">Многопрофильные решения для бизнеса</p>
               </div>
             </div>
             <div className="flex gap-4">
-              <Button variant="ghost" size="icon" className="text-purple-300 hover:text-white hover:bg-purple-800">
-                <Icon name="Mail" size={20} />
+              <Button variant="ghost" size="sm" className="text-purple-200 hover:text-white hover:bg-purple-900">
+                <Icon name="Mail" className="mr-2" size={16} />
+                Написать
               </Button>
-              <Button variant="ghost" size="icon" className="text-purple-300 hover:text-white hover:bg-purple-800">
-                <Icon name="Phone" size={20} />
-              </Button>
-              <Button variant="ghost" size="icon" className="text-purple-300 hover:text-white hover:bg-purple-800">
-                <Icon name="MessageCircle" size={20} />
+              <Button variant="ghost" size="sm" className="text-purple-200 hover:text-white hover:bg-purple-900">
+                <Icon name="Phone" className="mr-2" size={16} />
+                Позвонить
               </Button>
             </div>
           </div>
-          <div className="mt-8 pt-8 border-t border-purple-800 text-center text-sm text-purple-400">
-            © 2025 ИП Цветова А.С. Все права защищены
+          <div className="border-t border-purple-800 mt-8 pt-6 text-center text-sm text-purple-300">
+            <p>© 2025 ИП Цветова А.С. Все права защищены.</p>
           </div>
         </div>
       </footer>
