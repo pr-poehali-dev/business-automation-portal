@@ -270,10 +270,16 @@ const Index = () => {
                 <Icon name="Bot" className="mr-2" size={20} />
                 Открыть бот
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                <Icon name="Youtube" className="mr-2" size={20} />
-                Смотреть видео
-              </Button>
+              <div className="flex flex-col gap-3">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                  <Icon name="Youtube" className="mr-2" size={20} />
+                  Смотреть на YouTube
+                </Button>
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                  <Icon name="Video" className="mr-2" size={20} />
+                  Смотреть на Rutube
+                </Button>
+              </div>
               <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
                 <Icon name="FileText" className="mr-2" size={20} />
                 Читать статьи
